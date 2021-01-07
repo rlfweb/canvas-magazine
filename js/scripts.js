@@ -30,3 +30,15 @@ const imageHolders = document.querySelectorAll("div.image");
 imageHolders.forEach((holder) => {
   observer.observe(holder);
 });
+
+// initialising and running barba
+// by default, debug is false, but you can turn it to true and check if transitions found in Chrome console
+barba.init({
+  transitions: [
+    {
+      name: "switch",
+    },
+  ],
+  views: [],
+  debug: true,
+});
