@@ -48,6 +48,10 @@ barba.init({
       enter({ current, next, trigger }) {
         // running the runScripts function when we enter a new page with barba
         runScripts();
+        // A promise is 'after a certain amount of time, resolve this'
+        return new Promise((resolve) => {
+          setTimeout(resolve, 2000);
+        });
       },
     },
   ],
