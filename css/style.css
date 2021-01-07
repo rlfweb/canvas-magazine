@@ -153,3 +153,18 @@ footer a {
   display: block;
   color: currentColor;
 }
+
+/* Styles for image holders to fade in/out */
+
+div.image {
+  overflow: hidden;
+}
+
+div.image img {
+  transform: translate(0, 120%);
+  transition: transform 1s; 0.25s var(--timing);
+}
+
+div.image.in-view img {
+  transform: translate(0, 0);
+}

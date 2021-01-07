@@ -20,3 +20,13 @@ const observer = new IntersectionObserver(
 headers.forEach((header) => {
   observer.observe(header);
 });
+
+// give your images a class of i.e. "image" witih the html markup
+// Attach IntersectionObserver to every image and fade them in/out when they enter/leave the viewport, like the bullet points
+
+const imageHolders = document.querySelectorAll("div.image");
+
+// using the observer variable from above, can instead make a new variable, name it i.e. observer2 and have a new set of ratios or thresholds etc.
+imageHolders.forEach((holder) => {
+  observer.observe(holder);
+});
