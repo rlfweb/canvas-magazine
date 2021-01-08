@@ -1,5 +1,7 @@
 // if we have any javascript that runs on page load, which we also want to run when we are using barba, put all off the JS into a runScripts variable and then call that function when you need it
 
+const bodyTag = document.querySelector("body");
+
 const runScripts = () => {
   // using intersection observer to make the bullet points appear in the viewport and disappear when the h2 or h3 isn't in view
 
@@ -99,6 +101,19 @@ barba.init({
       },
     },
   ],
-  views: [],
+  // setting up view to add the body tag "product" to the view
+  // could set up several views if you have different parts of site that you want to be different
+  // also need to put the data-barba-namespace tag onto the body tag in product.html
+  views: [
+    {
+      namespace: "product",
+      beforeEnter() {
+        bodyTag.classList.add("product");
+      },
+      afterLeave() {
+        bodyTag.classList.remove("product");
+      },
+    },
+  ],
   debug: true,
 });
