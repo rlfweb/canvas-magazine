@@ -44,13 +44,45 @@ barba.init({
   transitions: [
     {
       name: "switch",
-      leave({ current, next, trigger }) {},
-      enter({ current, next, trigger }) {
-        // running the runScripts function when we enter a new page with barba
-        runScripts();
+      leave({ current, next, trigger }) {
         // A promise is 'after a certain amount of time, resolve this'
+        // setting up a new promise
         return new Promise((resolve) => {
-          setTimeout(resolve, 2000);
+          // setting up a timeline - when you're finished remove what was there and finish this whole transition
+          const timeline = gsap.timeline({
+            onComplete() {
+              current.container.remove();
+              resolve();
+            },
+          });
+          // timeline brings in the header and footer at the same time and fades out the current container
+          timeline
+            .to("header", { y: "-100%" }, 0)
+            .to("footer", { y: "100%" }, 0)
+            .to(current.container, { opacity: 0 });
+        });
+      },
+      enter({ current, next, trigger }) {
+        // new promise for the new page entering
+        return new Promise((resolve) => {
+          // scroll to the top
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+          // timeline which when complete, run the scripts and finish the whole page transition
+          const timeline = gsap.timeline({
+            onComplete() {
+              runScripts();
+              resolve();
+            },
+          });
+          // setting up timeline for the new page - container is hidden, fading in header and footer at the same time and then fading in the container
+          timeline
+            .set(next.container, { opacity: 0 })
+            .to("header", { y: "0%" }, 0)
+            .to("header", { y: "0%" }, 0)
+            .to(next.container, { opacity: 1 });
         });
       },
     },
