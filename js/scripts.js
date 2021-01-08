@@ -44,6 +44,18 @@ barba.init({
   transitions: [
     {
       name: "switch",
+      once({ current, next, trigger }) {
+        return new Promise((resolve) => {
+          const timeline = gasp.timeline({
+            onComplete() {
+              resolve();
+            },
+          });
+          timeline
+            .set(next.container, { opacity: 0 })
+            .to(next.container, { opacity: 1, delay: 1 });
+        });
+      },
       leave({ current, next, trigger }) {
         // A promise is 'after a certain amount of time, resolve this'
         // setting up a new promise
