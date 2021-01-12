@@ -41,21 +41,29 @@ const runScripts = () => {
 runScripts();
 
 // initialising and running barba
-// by default, debug is false, but you can turn it to true and check if transitions found in Chrome console
 barba.init({
+  // we have one transition with several things inside
   transitions: [
     {
       name: "switch",
+      // waiting for the first page load
       once({ current, next, trigger }) {
+        // then return a promise
         return new Promise((resolve) => {
-          const timeline = gasp.timeline({
-            onComplete() {
-              resolve();
-            },
+          // collect all images in my transition and wait for them to load
+          const images = document.querySelectorAll("img");
+          // set the images to opacity zero so no content appears when waiting for images to appear
+          gsap.set(next.container, { opacity: 0 });
+
+          imagesLoaded(images, () => {
+            // once images loaded, run this timeline and when finished, resolve the whole promise
+            const timeline = gsap.timeline({
+              onComplete() {
+                resolve();
+              },
+            });
+            timeline.to(next.container, { opacity: 1, delay: 1 });
           });
-          timeline
-            .set(next.container, { opacity: 0 })
-            .to(next.container, { opacity: 1, delay: 1 });
         });
       },
       leave({ current, next, trigger }) {
@@ -115,5 +123,6 @@ barba.init({
       },
     },
   ],
+  // by default, debug is false, but you can turn it to true and check if transitions found in Chrome console
   debug: true,
 });
